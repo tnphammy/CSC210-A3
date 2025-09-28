@@ -1,4 +1,4 @@
-# Assignment 7: Linked List Implementation
+# Assignment 3: Linked List Implementation
 
 For this assignment you will develop your own implementation of a singly linked list (SLL).  There are a lot of files in this assignment, so take a moment and let's walk through them. The hope is that breaking things into pieces (hence the many files) will help you to start with the basic properties of an SLL and expand outwards until you have built a fully operational implementation of this data structure.
 
