@@ -17,7 +17,7 @@
      * Creates an empty SLL
      * @param head The first, empty, Node
      */
-    public SLL(NodeSL<T> head) {
+    public SLL() {
         this.head = null;
         this.tail = this.head; // UNSURE
     }
@@ -57,8 +57,13 @@
      *  @return the tail node
      */
     public NodeSL<T> getTail() {
-        NodeSL<T> defaultNode = new NodeSL<T>(null, null);
-        return defaultNode;
+        // Edge case: SLL is Empty or has only 1 Node
+        if (this.isEmpty() || this.head.getNext() == null) {
+            this.tail = this.head;
+            return this.tail;
+        }
+        // Happy case: SLL has more than one Node
+        return this.tail;
     }
 
     /** 
@@ -80,11 +85,20 @@
      *  @param v item to insert 
      */
     public void addFirst(T v) {
-
+        // Attach v as a Node to the front of the SLL
+        NodeSL<T> newNode = new NodeSL<T>(v, head);
+        // Set Node to be the new SLL head
+        this.head = newNode;
+        // Set the SLL tail
+        this.tail = this.getTail();
     }
 
     /** Converts to a string representation */
     public String toString() {
+        // Edge case: Empty SLL
+        if (this.head == null) {
+            return "[]";
+        }
         // Edge case: Only one Node
         if (this.head == this.tail) {
             return "[" + this.head.getData() + "]";
@@ -94,22 +108,25 @@
             String output = "["; 
             // Make a temp pointer
             NodeSL<T> curr = this.head; 
-            output += curr + ", "; // Head Node gets added first
+            output += curr.getData(); // Head Node gets added first
             while (curr != this.tail) {
                 // Update the pointer
                 curr = curr.getNext();
                 // Add current pointer Node to output
-                output += curr.getData() + ", ";
-            }
-            // Add tail to output without following comma
-            if (curr == this.tail) {
-                output += curr.getData();
+                output += ", " + curr.getData();
             }
             return output + "]";
         }
-        // Edge case: Empty SLL
-        else {
             return "[]";
-        }
+    }
+
+    public static void main(String[] args) {
+        SLL<String> list = new SLL<>();
+        System.out.println(list.toString());
+        list.addFirst("tammy");
+        System.out.println(list.toString());
+        list.addFirst("sofia");
+        System.out.println(list.toString());
     }
  }
+
