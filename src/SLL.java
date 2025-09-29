@@ -178,6 +178,10 @@ public class SLL<T> {
      * @return v item removed
      */
     public T removeFirst() {
+        // 0. Edge case: Trying to remove from empty list
+        if (this.isEmpty()) {
+            throw new MissingElementException();
+        }
         // Store new head
         NodeSL<T> newHead = this.head.getNext();
         // Make the first item (the head) point to nothing,
@@ -195,6 +199,10 @@ public class SLL<T> {
      * @return item removed
      */
     public T removeLast() {
+        // 0. Edge case: Trying to remove from empty list
+        if (this.isEmpty()) {
+            throw new MissingElementException();
+        }
         // 1. Store tail's data
         T removedData = this.tail.getData();
         // 2. Point the second to last's Node to null
@@ -219,9 +227,9 @@ public class SLL<T> {
      * @return item removed
      */
     public T removeAfter(NodeSL<T> here) {
-        // 0. Edge cases: Empty list -> Do nothing
+        // 0. Edge cases: Trying to remove from an empty list 
         if (this.isEmpty()) {
-            return null;
+            throw new MissingElementException();
         }
         // 1. Locate specified Nodes (beforeDeleted(curr) - toBeDeleted - afterDeleted)
         NodeSL<T> curr = this.head;
@@ -230,7 +238,7 @@ public class SLL<T> {
         }
         // If nothing follows curr
         if (curr.getNext() == null) {
-            return null; // nothing was removed
+            throw new MissingElementException();
         }
         else {
             NodeSL<T> toBeDeleted = curr.getNext();
