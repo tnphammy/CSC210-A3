@@ -340,8 +340,29 @@ public class SLL<T> {
      */
     public void spliceByCopy(SLL<T> list, NodeSL<T> afterHere) {
         // 0. Edge case: Trying to splice an empty list
+        if (this.size() == 0) {
+            throw new SelfInsertException();
+        }
         // 0.1. Edge case: Trying to insert an empty list
-        // 
+        if (list.size() > 0) {
+            // 1. Make a copy of the list
+            SLL<T> copySLL = list.subseqByCopy(list.getHead(), list.size());
+            // 1.1. Edge case: Trying to insert at the front (afterHere == null)
+            if (afterHere == null) {
+                // Attach the tail of list to the head of current SLL
+                copySLL.tail.setNext(this.head);
+                // Update the head of current list
+                this.head = copySLL.head;
+            }
+            else {
+                // 2. Store a continueHere to attach after the new list
+                NodeSL<T> continueHere = afterHere.getNext();
+                // 3. Attach new list elements to afterHere
+                afterHere.setNext(copySLL.head);
+                // 4. Point the end of new list to continueHere
+                copySLL.tail.setNext(continueHere);
+            }
+        }
     }
 
     /**
