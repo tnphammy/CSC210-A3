@@ -424,20 +424,47 @@ public class SLL<T> {
      * @param afterHere Marks the place where the new elements are inserted
      */
     public void spliceByTransfer(SLL<T> list, NodeSL<T> afterHere) {
-        System.out.println("void.");
+        // 0. Edge case: Trying to splice an empty list
+        if (this.size() == 0) {
+            throw new SelfInsertException();
+        }
+        // Condition: Only insert if `list` isn't empty
+        if (!list.isEmpty()) {
+            // 0. Edge case: Trying to insert at front of list
+            if (afterHere == null) {
+                // 1. Loop: Take out the last element of `list` -> Add to front of this SLL
+                while (!list.isEmpty()) {
+                    // 1.1. Take out (mutating) data of the tail of list
+                    T toBeAdded = list.removeLast();
+                    // 1.2. Add that tail to front of this SLL
+                    this.addFirst(toBeAdded);
+                }
+            }
+            else {
+                // Happy case :)
+                // 1. Loop: Take out the last element of `list` -> Add at correct index
+                while (!list.isEmpty()) {
+                    // 1.1. Take out (mutating) data of the tail of list
+                    T toBeAdded = list.removeLast();
+                    // 1.2. Add that tail after afterHere
+                    this.addAfter(afterHere, toBeAdded);
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
         SLL<String> list = new SLL<>();
         list.addLast("D");
-        list.addLast("E");
         list.addLast("B");
         list.addLast("A");
         list.addLast("C");
         System.out.println(list.toString());
-        SLL<String> list2 = list.subseqByTransfer(null, list.getHead().getNext().getNext());
+        SLL<String> list2 = new SLL<>();
+        list2.addLast("E");
+        list.spliceByTransfer(list2, list.getHead());
+        System.out.println("List: " + list.toString());
         System.out.println("List 2: " + list2.toString());
-        System.out.println("List 1: " + list.toString());
 
 
     }

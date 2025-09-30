@@ -22,9 +22,10 @@ PART 1 pts: Program throws appropriate exceptions (with informative error messag
 
 YES 1 pt: Passes all phase 3 tests for singly linked list
 
-PART 1 pt: Phase 4 methods implemented efficiently for singly linked list
+YES 1 pt: Phase 4 methods implemented efficiently for singly linked list
 
-PART 1 pt: Passes all phase 4 tests for singly linked list
+YES 1 pt: Phase 4 methods implemented efficiently for singly linked list
+YES 1 pt: Passes all phase 4 tests for singly linked list
 
 
 ## Kudos (Extra Challenge):
