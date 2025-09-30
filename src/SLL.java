@@ -72,12 +72,16 @@ public class SLL<T> {
         // Edge case: SLL is Empty or has only 1 Node
         if (this.isEmpty() || this.head.getNext() == null) {
             this.tail = this.head;
+            System.out.println("goattt");
         }
-        // Normal Case: More than 1 element
-        NodeSL<T> curr = this.tail;
-        // Iterate until the end of the SLL
-        while (curr.getNext() != null) {
-            curr = curr.getNext();
+        else {
+            // Normal Case: More than 1 element
+            NodeSL<T> curr = this.tail;
+            // Iterate until the end of the SLL
+            while (curr.getNext() != null) {
+                curr = curr.getNext();
+            }
+            this.tail = curr; // Update tail
         }
     }
 
@@ -101,7 +105,7 @@ public class SLL<T> {
         // Set Node to be the new SLL head
         this.head = newNode;
         // Set the SLL tail
-        this.tail = this.getTail();
+        updateTail();
     }
 
     /** Converts to a string representation */
@@ -146,10 +150,16 @@ public class SLL<T> {
     public void addLast(T v) {
         // Make the new item into a newTail
         NodeSL<T> newTail = new NodeSL<T>(v, null);
-        // Point the tail of the SLL -> newTail
-        this.tail.setNext(newTail);
-        // Update the tail to be newTail
-        this.tail = newTail;
+        // Edge case: SLL is Empty
+        if (this.isEmpty()) {
+            this.head = this.tail = newTail;
+        }
+        else {
+            // Point the tail of the SLL -> newTail
+            this.tail.setNext(newTail);
+            // Update the tail to be newTail
+            this.tail = newTail;
+        }
     }
 
     /**
@@ -170,6 +180,8 @@ public class SLL<T> {
         NodeSL<T> newNode = new NodeSL<T>(v, next);
         // 4. Adjust pointers accordingly
         curr.setNext(newNode);
+        // Update tail
+        updateTail();
     }
 
     /**
@@ -189,6 +201,7 @@ public class SLL<T> {
         T removedData = this.head.getData(); // Store data to return
         // Reassign the head
         this.head = newHead;
+        updateTail();
         // Return the data of the removed Node
         return removedData;
     }
@@ -202,6 +215,12 @@ public class SLL<T> {
         // 0. Edge case: Trying to remove from empty list
         if (this.isEmpty()) {
             throw new MissingElementException();
+        }
+        // Edge case: Only one Node left
+        if (this.size() == 1) {
+            T removedData = this.head.getData();
+            this.head = this.tail = null;
+            return removedData;
         }
         // 1. Store tail's data
         T removedData = this.tail.getData();
@@ -227,41 +246,35 @@ public class SLL<T> {
      * @return item removed
      */
     public T removeAfter(NodeSL<T> here) {
-        // 0. Edge cases: Trying to remove from an empty list 
-        if (this.isEmpty()) {
-            throw new MissingElementException();
+        // 0.1. Edge case: Trying to remove head of list
+        if (here == null) {
+            // Store new head
+            NodeSL<T> newHead = this.head.getNext();
+            // Point old head to null
+            T removedData = this.head.getData();
+            this.head.setNext(null);
+            // Set new head 
+            this.head = newHead;
+            // Return requested data
+            return removedData;
         }
-        // 1. Locate specified Nodes (beforeDeleted(curr) - toBeDeleted - afterDeleted)
-        NodeSL<T> curr = this.head;
-        while (curr.getData() != here.getData()) {
-            curr = curr.getNext();
-        }
-        // If nothing follows curr
-        if (curr.getNext() == null) {
+        // 0.2. Edge cases: Trying to remove from an empty list or element following tail
+        if (this.isEmpty() || this.size() == 1) {
             throw new MissingElementException();
         }
         else {
-            NodeSL<T> toBeDeleted = curr.getNext();
+            // 1. Get toBeDeleted Node, store data
+            NodeSL<T> toBeDeleted = here.getNext();
             T removedData = toBeDeleted.getData();
-            // If nothing follows toBeDeleted
-            if (toBeDeleted.getNext() == null) {
-                toBeDeleted.setNext(null); // Delete toBeDeleted
-                // Point curr to the void + make it the tail
-                curr.setNext(null); 
-                this.tail = curr;
-                // Return requested data
-                return removedData;
-            }
-            else {
-                NodeSL<T> afterDeleted = toBeDeleted.getNext();
-                // 2. Adjust pointers accordingly
-                // 2.1 toBeDeleted -> null
-                toBeDeleted.setNext(null);
-                // 2.2. curr -> afterDeleted
-                curr.setNext(afterDeleted);
-                // 3. Return requested data
-                return removedData;
-            }
+            // 2. Get afterDeleted Node
+            NodeSL<T> afterDeleted = toBeDeleted.getNext();
+            // 3. Adjust pointers
+            // 3.1. here -> afterDeleted
+            here.setNext(afterDeleted);
+            // 3.2. toBeDeleted -> null
+            toBeDeleted.setNext(null);
+            // 4. Return data
+            return removedData;
         }
     }
 
@@ -280,16 +293,84 @@ public class SLL<T> {
         // Loop through SLL
         NodeSL<T> curr = this.head;
         size++; // count head first
-        while(curr.getNext() != null) {
+        while (curr.getNext() != null) {
             curr = curr.getNext(); // Increment pointer
             size++; // Incrememt size
         }
         return size;
     }
 
+    /* PHASE 4 */
+    /**
+     * Makes a copy of elements from the original list
+     * 
+     * @param here starting point of copy
+     * @param n    number of items to copy
+     * @return the copied list
+     */
+    public SLL<T> subseqByCopy(NodeSL<T> here, int n) {
+        // 1. Make copy SLL
+        SLL<T> copySLL = new SLL<>();
+        // 2.1. Edge case: Empty list -> return early
+        if (here == null) {
+            return copySLL;
+        }
+        // 2.2. Edge case: n is larger than the size of the list
+        if (this.size() < n) {
+            throw new SelfInsertException();
+        }
+        // 3. Make pointer to iterate through list
+        NodeSL<T> curr = here;
+        // 4. Loop through list by n -> Copy in new Nodes
+        for (int i = 0; i < n; i++) {
+            // Add curr's data to copySLL
+            copySLL.addLast(curr.getData());
+            // Update pointer
+            curr = curr.getNext();
+        }
+        // 5. Return SLL
+        return copySLL;
+    }
+
+    /**
+     * Places copy of the provided list into this after the specified node.
+     * 
+     * @param list      the list to splice in a copy of
+     * @param afterHere marks the position in this where the new list should go
+     */
+    public void spliceByCopy(SLL<T> list, NodeSL<T> afterHere) {
+        // 0. Edge case: Trying to splice an empty list
+        // 0.1. Edge case: Trying to insert an empty list
+        // 
+    }
+
+    /**
+     * Extracts a subsequence of nodes and returns them as a new list
+     * 
+     * @param afterHere marks the node just before the extraction
+     * @param toHere    marks the node where the extraction ends
+     * @return the new list
+     */
+    public SLL<T> subseqByTransfer(NodeSL<T> afterHere, NodeSL<T> toHere) {
+        return this;
+    }
+
+    /**
+     * Takes the provided list and inserts its elements into this
+     * after the specified node. The inserted list ends up empty.
+     * 
+     * @param list      the list to splice in. Becomes empty after the call
+     * @param afterHere Marks the place where the new elements are inserted
+     */
+    public void spliceByTransfer(SLL<T> list, NodeSL<T> afterHere) {
+        System.out.println("void.");
+    }
+
     public static void main(String[] args) {
         SLL<String> list = new SLL<>();
         System.out.println(list.toString());
+        System.out.println("head: " + list.getHead());
+        System.out.println("tail: " + list.getTail());
         list.addFirst("tammy");
         System.out.println(list.toString());
         list.addFirst("sofia");
@@ -299,6 +380,10 @@ public class SLL<T> {
         list.addAfter(new NodeSL<String>("kana", null), "mars");
         System.out.println(list.toString());
         System.out.println("Size: " + list.size());
+        System.out.println(list.removeAfter(null));
+        System.out.println(list.toString());
+        SLL<String> list2 = list.subseqByCopy(list.getHead(), 2);
+        System.out.println("List 2: " + list2.toString());
 
     }
 }

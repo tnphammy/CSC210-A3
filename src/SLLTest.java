@@ -27,7 +27,7 @@ public class SLLTest {
     public static final String[] dec = { "D", "E", "C" };
     public static final String[] def = { "D", "E", "F" };
 
-    /* Method to create an SLL, returns SLL*/
+    /* Method to create an SLL, returns SLL */
     public static <T> SLL<T> makeSLL(T[] arr) {
         SLL<T> list = new SLL<T>();
         int i = arr.length;
@@ -60,7 +60,6 @@ public class SLLTest {
         return result;
     }
 
-
     @Test
     public void check_methods() {
         SLL<String> list = new SLL<>();
@@ -73,7 +72,7 @@ public class SLLTest {
     public void test_addFirst_1() {
         SLL<String> list = new SLL<>();
         list.addFirst("A");
-        
+
         assertTrue("list of 1 isn't empty", !list.isEmpty());
         assertTrue("same head and tail of singleton", list.getHead() == list.getTail());
         assertTrue("data correct", list.getHead().getData().equals("A"));
@@ -113,7 +112,7 @@ public class SLLTest {
 
     @Test
     public void test_toString() {
-        
+
         SLL<String> list = new SLL<>();
         assertTrue("empty list is []", list.toString().equals("[]"));
         list.addFirst("A");
