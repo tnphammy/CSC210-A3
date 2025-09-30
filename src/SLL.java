@@ -343,8 +343,8 @@ public class SLL<T> {
         if (this.size() == 0) {
             throw new SelfInsertException();
         }
-        // 0.1. Edge case: Trying to insert an empty list
-        if (list.size() > 0) {
+        // Condition: Only insert if `list` isn't empty
+        if (list.isEmpty()) {
             // 1. Make a copy of the list
             SLL<T> copySLL = list.subseqByCopy(list.getHead(), list.size());
             // 1.1. Edge case: Trying to insert at the front (afterHere == null)
@@ -373,7 +373,42 @@ public class SLL<T> {
      * @return the new list
      */
     public SLL<T> subseqByTransfer(NodeSL<T> afterHere, NodeSL<T> toHere) {
-        return this;
+        // 0. Edge cases: this SLL is empty
+        if (this.isEmpty()) {
+            throw new MissingElementException();
+        }
+        // 1. Make a new list for extracted elements
+        SLL<T> extractedList = new SLL<T>();
+        // Condition: Only operate if both args are not null at once
+        if (afterHere != null || toHere != null) {
+            // Edge case: either argument is null
+            if (afterHere == null) {
+                // Loop and removeFirst each element until toHere is gone
+                while (this.head != toHere.getNext()) {
+                    T removedData = this.removeFirst(); // remove from front
+                    extractedList.addLast(removedData); // store removed data
+                }
+            }
+            else if (toHere == null) {
+                // Loop and removeLast each element until afterHere 
+                while (this.tail != afterHere.getNext()) {
+                    T removedData = this.removeFirst(); // remove from front
+                    extractedList.addLast(removedData); // store removed data
+                }
+            }
+            else {
+                // Happy case :)
+                // 1. Make an anchor (the element before the first extracted element)
+                NodeSL<T> anchor = afterHere;
+                // 2. Loop and remove each element after anchor until toHere
+                while (anchor.getNext() != toHere.getNext()) {
+                    T removedData = this.removeAfter(anchor); // remove data
+                    extractedList.addLast(removedData); // store removed data
+                } 
+            }
+            return extractedList;
+        }
+        return extractedList;
     }
 
     /**
