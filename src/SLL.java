@@ -344,7 +344,7 @@ public class SLL<T> {
             throw new SelfInsertException();
         }
         // Condition: Only insert if `list` isn't empty
-        if (list.isEmpty()) {
+        if (!list.isEmpty()) {
             // 1. Make a copy of the list
             SLL<T> copySLL = list.subseqByCopy(list.getHead(), list.size());
             // 1.1. Edge case: Trying to insert at the front (afterHere == null)
@@ -384,14 +384,16 @@ public class SLL<T> {
             // Edge case: either argument is null
             if (afterHere == null) {
                 // Loop and removeFirst each element until toHere is gone
-                while (this.head != toHere.getNext()) {
+                NodeSL<T> stop = toHere.getNext();
+                while (this.head != stop) {
                     T removedData = this.removeFirst(); // remove from front
                     extractedList.addLast(removedData); // store removed data
                 }
             }
             else if (toHere == null) {
                 // Loop and removeLast each element until afterHere 
-                while (this.tail != afterHere.getNext()) {
+                NodeSL<T> stop = afterHere.getNext();
+                while (this.tail != stop) {
                     T removedData = this.removeFirst(); // remove from front
                     extractedList.addLast(removedData); // store removed data
                 }
@@ -401,9 +403,12 @@ public class SLL<T> {
                 // 1. Make an anchor (the element before the first extracted element)
                 NodeSL<T> anchor = afterHere;
                 // 2. Loop and remove each element after anchor until toHere
-                while (anchor.getNext() != toHere.getNext()) {
+                NodeSL<T> stop = toHere.getNext();
+                while (anchor.getNext() != stop) {
+                    System.out.println("anchor is: " + anchor.getData());
                     T removedData = this.removeAfter(anchor); // remove data
                     extractedList.addLast(removedData); // store removed data
+                    System.out.println("extracted: " + extractedList.toString());
                 } 
             }
             return extractedList;
@@ -424,22 +429,16 @@ public class SLL<T> {
 
     public static void main(String[] args) {
         SLL<String> list = new SLL<>();
+        list.addLast("D");
+        list.addLast("E");
+        list.addLast("B");
+        list.addLast("A");
+        list.addLast("C");
         System.out.println(list.toString());
-        System.out.println("head: " + list.getHead());
-        System.out.println("tail: " + list.getTail());
-        list.addFirst("tammy");
-        System.out.println(list.toString());
-        list.addFirst("sofia");
-        System.out.println(list.toString());
-        list.addLast("kana");
-        System.out.println(list.toString());
-        list.addAfter(new NodeSL<String>("kana", null), "mars");
-        System.out.println(list.toString());
-        System.out.println("Size: " + list.size());
-        System.out.println(list.removeAfter(null));
-        System.out.println(list.toString());
-        SLL<String> list2 = list.subseqByCopy(list.getHead(), 2);
+        SLL<String> list2 = list.subseqByTransfer(null, list.getHead().getNext().getNext());
         System.out.println("List 2: " + list2.toString());
+        System.out.println("List 1: " + list.toString());
+
 
     }
 }
