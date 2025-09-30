@@ -51,12 +51,14 @@ public class SLL_IteratorTest {
         SLL<String> list = SLLTest.makeSLL(empty);
         SLL_Iterator<String> iter = new SLL_Iterator<>(list);
         assertThrows("exception on initial set",
-            MissingElementException.class,
-            () -> { iter.set("D");});
+                MissingElementException.class,
+                () -> {
+                    iter.set("D");
+                });
     }
 
     @Test
-    public void test_iterator_set2(){
+    public void test_iterator_set2() {
         SLL<String> list = SLLTest.makeSLL(abc);
         SLL_Iterator<String> iter1 = new SLL_Iterator<>(list);
         iter1.next();

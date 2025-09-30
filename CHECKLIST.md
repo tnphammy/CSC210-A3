@@ -24,19 +24,32 @@ YES 1 pt: Passes all phase 3 tests for singly linked list
 
 YES 1 pt: Phase 4 methods implemented efficiently for singly linked list
 
-YES 1 pt: Phase 4 methods implemented efficiently for singly linked list
+    /**
+     * Removes the node just passed
+     * Cannot be called twice in a row without intervening next()
+     */
+    public void remove() {
+        // 0. Edge case: Removing from an empty list or a null prev
+        if (list.isEmpty() || prev == null) {
+            throw new MissingElementException();
+        }
+        else {
+            // Update pointer and list head
+     
+        }
+    } 1 pt: Phase 4 methods implemented efficiently for singly linked list
 YES 1 pt: Passes all phase 4 tests for singly linked list
 
 
 ## Kudos (Extra Challenge):
 
-______ Iterator can get elements
+YES Iterator can get elements
 
-______ Iterator can set elements
+___YES___ Iterator can set elements
 
-______ Iterator can add elements
+___YES___ Iterator can add elements
 
-______ Iterator can remove elements
+PART Iterator can remove elements
 
 
 ## General Items:

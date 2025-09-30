@@ -1,5 +1,14 @@
 /** Keeps track of position in a linked list */
 public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
+    /* ATTRIBUTES */
+    /** The SLL taken */
+    protected SLL<T> list;
+    /** The Node just passed */
+    protected NodeSL<T> prev;
+    /** The Node just passed */
+    protected NodeSL<T> curr;
+
+
     /**
      * Creates a new iterator on the given list.
      * Default position is leftmost
@@ -7,7 +16,9 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
      * @param list the list to iterate on
      */
     public SLL_Iterator(SLL<T> list) {
-        // TODO
+        this.list = list;
+        this.prev = null; // start at the void
+        this.curr = list.head;
     }
 
     /**
@@ -16,8 +27,7 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
      * @return T/F is it safe to call next()?
      */
     public boolean hasNext() {
-        // TODO
-        return false;
+        return (curr != null);
     }
 
     /**
@@ -27,8 +37,18 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
      * @return the next element
      */
     public T next() {
-        // TODO
-        return null;
+        if (!hasNext()) {
+            throw new MissingElementException();
+        }
+        else {
+            // Get data
+            T data = curr.getData();
+            // Update pointers
+            prev = curr;
+            curr = curr.getNext();
+            // Return data
+            return data;
+        }
     }
 
     /**
@@ -37,7 +57,12 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
      * @param data value to set
      */
     public void set(T data) {
-        // TODO
+        // 0. Edge case: Setting data in an empty list
+        if (list.isEmpty()) {
+            throw new MissingElementException();
+        }
+        // Add data after prev
+        prev.setData(data);
     }
 
     /**
@@ -46,8 +71,12 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
      * @return data value in the element just passed
      */
     public T get() {
-        // TODO
-        return null;
+        if (curr == null) {
+            throw new MissingElementException();
+        }
+        else {
+            return curr.getData();
+        }
     }
 
     /**
@@ -57,7 +86,27 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
      * @param data the value to insert
      */
     public void add(T data) {
-        // TODO
+        // 0. Edge case: Adding data to an empty list
+        if (list.isEmpty()) {
+            // Add to SLL
+            list.addLast(data);
+            // Update Iterators pointer
+            prev = list.head;
+            curr = null;
+        }
+        else {
+            // Add data after prev
+            NodeSL<T> newNode = new NodeSL<T>(data, curr);
+            // Add to front of non-empty list
+            if (prev != null) {
+                prev.setNext(newNode);
+            }
+            else {
+                list.head = newNode; // Note: Remember to think about the SLL too
+            }
+            // Update pointer and list head
+            prev = newNode;
+        }
     }
 
     /**
@@ -65,6 +114,13 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
      * Cannot be called twice in a row without intervening next()
      */
     public void remove() {
-        // TODO
+        // 0. Edge case: Removing from an empty list or a null prev
+        if (list.isEmpty() || prev == null) {
+            throw new MissingElementException();
+        }
+        else {
+            // Update pointer and list head
+     
+        }
     }
 }
