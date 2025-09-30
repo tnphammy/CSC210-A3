@@ -246,8 +246,8 @@ public class SLL<T> {
      * @return item removed
      */
     public T removeAfter(NodeSL<T> here) {
-        // 0.1. Edge case: Trying to remove head of list
-        if (here == null) {
+        // 0.1. Edge case: Trying to remove head of non-empty list
+        if (here == null && (!this.isEmpty())) {
             // Store new head
             NodeSL<T> newHead = this.head.getNext();
             // Point old head to null
@@ -343,6 +343,10 @@ public class SLL<T> {
         if (this.size() == 0) {
             throw new SelfInsertException();
         }
+        // 0.1. Edge case: Trying to insert a list into itself
+        if (this == list) {
+            throw new SelfInsertException();
+        }
         // Condition: Only insert if `list` isn't empty
         if (!list.isEmpty()) {
             // 1. Make a copy of the list
@@ -426,6 +430,10 @@ public class SLL<T> {
     public void spliceByTransfer(SLL<T> list, NodeSL<T> afterHere) {
         // 0. Edge case: Trying to splice an empty list
         if (this.size() == 0) {
+            throw new SelfInsertException();
+        }
+        // 0.1. Edge case: Trying to insert a list into itself
+        if (this == list) {
             throw new SelfInsertException();
         }
         // Condition: Only insert if `list` isn't empty
