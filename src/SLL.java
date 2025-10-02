@@ -415,7 +415,6 @@ public class SLL<T> {
                     System.out.println("extracted: " + extractedList.toString());
                 } 
             }
-            return extractedList;
         }
         return extractedList;
     }

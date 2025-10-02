@@ -3,7 +3,7 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
     /* ATTRIBUTES */
     /** The SLL taken */
     protected SLL<T> list;
-    /** The Node just passed */
+    /** The Node before the Node just passed */
     protected NodeSL<T> prev;
     /** The Node just passed */
     protected NodeSL<T> curr;
@@ -77,7 +77,7 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
             throw new MissingElementException();
         }
         // Add data after prev
-        prev.setData(data);
+        curr.setData(data);
     }
 
     /**
@@ -106,21 +106,21 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
             // Add to SLL
             list.addLast(data);
             // Update Iterators pointer
-            prev = list.head;
-            curr = null;
+            prev = null;
+            curr = list.head;
+        }
+        // Adding to front of a list
+        else if (curr == null && list.head != null) {
+            // Add to front of list
+            list.addFirst(data);
+            // Change pointer
+            curr = list.head;
         }
         else {
-            // Add data after prev
-            NodeSL<T> newNode = new NodeSL<T>(data, curr);
-            // Add to front of non-empty list
-            if (prev != null) {
-                prev.setNext(newNode);
-            }
-            else {
-                list.head = newNode; // Note: Remember to think about the SLL too
-            }
-            // Update pointer and list head
-            prev = newNode;
+            // Add data after curr
+            list.addAfter(curr, data);
+            // Update pointer 
+            this.next();
         }
     }
 
@@ -129,14 +129,24 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
      * Cannot be called twice in a row without intervening next()
      */
     public void remove() {
-        // 0. Edge case: Removing from an empty list or a null prev
-        if (list.isEmpty() || prev == null) {
+        // 0. Edge case: Removing from an empty list or a null 'just passed'
+        if (list.isEmpty() || curr == null) {
             throw new MissingElementException();
         }
-                          
+        // Removing first element
+        else if (prev == null && curr != null) {
+            list.removeFirst();
+            // Update pointers
+            prev = null;
+            curr = null;
+        }              
         else {
-            // Update pointer and list head
-     
+            // Store a new curr ( prev -> newCurr)
+            NodeSL<T> newCurr = curr.getNext();
+            // Remove the element
+            list.removeAfter(prev);
+            // Update pointers
+            prev.setNext(newCurr);
         }
     }
 }
