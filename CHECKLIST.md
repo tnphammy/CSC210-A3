@@ -1,7 +1,8 @@
 # CSC 210 Data Structures
+
 ## Assignment 7 Checklist
 
-Listed below are various aspects of the assignment.  When you turn in
+Listed below are various aspects of the assignment. When you turn in
 your work, please indicate the status of each item
 
 - YES: indicates that the item is fully complete
@@ -35,22 +36,21 @@ YES 1 pt: Phase 4 methods implemented efficiently for singly linked list
         }
         else {
             // Update pointer and list head
-     
+
         }
     } 1 pt: Phase 4 methods implemented efficiently for singly linked list
-YES 1 pt: Passes all phase 4 tests for singly linked list
 
+YES 1 pt: Passes all phase 4 tests for singly linked list
 
 ## Kudos (Extra Challenge):
 
 YES Iterator can get elements
 
-___YES___ Iterator can set elements
+**_YES_** Iterator can set elements
 
-___YES___ Iterator can add elements
+**_YES_** Iterator can add elements
 
 PART Iterator can remove elements
-
 
 ## General Items:
 

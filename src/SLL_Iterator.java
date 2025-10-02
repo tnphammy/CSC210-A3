@@ -18,7 +18,8 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
     public SLL_Iterator(SLL<T> list) {
         this.list = list;
         this.prev = null; // start at the void
-        this.curr = list.head;
+        this.curr = null;
+        
     }
 
     /**
@@ -27,7 +28,15 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
      * @return T/F is it safe to call next()?
      */
     public boolean hasNext() {
-        return (curr != null);
+        // 0. Edge case: empty list
+        if (list.head == null) {
+            return false;
+        }
+        // At beginning of list, right before the list starts
+        if (curr == null && list.head != null) {
+            return true;
+        }
+        return (curr.getNext() != null);
     }
 
     /**
@@ -37,12 +46,18 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
      * @return the next element
      */
     public T next() {
-        if (!hasNext()) {
+        if (curr == null && list.head != null) {
+            curr = list.head;
+            // Get data:
+            T data = curr.getData();
+            return data;
+        }
+        else if (list.head == null || !hasNext()) {
             throw new MissingElementException();
         }
         else {
             // Get data
-            T data = curr.getData();
+            T data = curr.getNext().getData();
             // Update pointers
             prev = curr;
             curr = curr.getNext();
@@ -118,6 +133,7 @@ public class SLL_Iterator<T> implements Phase5SLL_Iterator<T> {
         if (list.isEmpty() || prev == null) {
             throw new MissingElementException();
         }
+                          
         else {
             // Update pointer and list head
      
