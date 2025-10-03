@@ -17,14 +17,13 @@ public class SLL<T> {
     /* CONSTRUCTOR */
     /**
      * Creates an empty SLL
-     * 
-     * @param head The first, empty, Node
      */
     public SLL() {
         this.head = null;
         this.tail = this.head; // UNSURE
     }
 
+    /** Makes a deep copy of a SLL */
     public SLL(SLL<T> orig) {
         // Empty list
         if (orig.head == null) {
@@ -147,9 +146,9 @@ public class SLL<T> {
      * 
      * @param item to insert
      */
-    public void addLast(T v) {
+    public void addLast(T item) {
         // Make the new item into a newTail
-        NodeSL<T> newTail = new NodeSL<T>(v, null);
+        NodeSL<T> newTail = new NodeSL<T>(item, null);
         // Edge case: SLL is Empty
         if (this.isEmpty()) {
             this.head = this.tail = newTail;
@@ -458,21 +457,5 @@ public class SLL<T> {
                 }
             }
         }
-    }
-
-    public static void main(String[] args) {
-        SLL<String> list = new SLL<>();
-        list.addLast("D");
-        list.addLast("B");
-        list.addLast("A");
-        list.addLast("C");
-        System.out.println(list.toString());
-        SLL<String> list2 = new SLL<>();
-        list2.addLast("E");
-        list.spliceByTransfer(list2, list.getHead());
-        System.out.println("List: " + list.toString());
-        System.out.println("List 2: " + list2.toString());
-
-
     }
 }
