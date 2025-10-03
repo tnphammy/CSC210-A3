@@ -1,8 +1,8 @@
 /**
  * Class to implement a singly linked list
  *
- * @author
- * @version Spring 2024
+ * @author Tammy Pham
+ * @version Fall 2025
  */
 
 public class SLL<T> {
@@ -23,7 +23,9 @@ public class SLL<T> {
         this.tail = this.head; // UNSURE
     }
 
-    /** Makes a deep copy of a SLL */
+    /** Makes a deep copy of a SLL 
+     * @param orig the SLL being copied
+    */
     public SLL(SLL<T> orig) {
         // Empty list
         if (orig.head == null) {
